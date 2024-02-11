@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="form_div">
+
+        <form action="/home_form" method="POST">
+            <p id="result"><%= p_tag %></p>
+            <label for="id_username">User Name</label>
+            <input type="text" id="id_username" name="username">
+            <br>
+            <label for="id_password">Password</label>
+            <input type="password" id="id_password" name="password">
+            <br>
+
+            <label for="signin_but"></label>
+            <button type="submit" id="signin_but" name="action" value="signin">Sign-in</button>
+            
+            <label for="register_but"></label>
+            <button type="submit" name="action" value="register" id="register_but">Register</button>
+        </form>
+       
+    </div>
+</body>
+</html>

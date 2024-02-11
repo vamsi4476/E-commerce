@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/home.css">
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <!-- Mobiles list on the left side -->
+        <h1>Hey <%=username %>, Welcome</h1>
+
+        <!-- <a id="Go-to-home" href="">Home</a> -->
+
+        <!-- "Add to Cart" anchor tag on the right side -->
+        <a class="Go-to-Cart" href="cart">Cart items</a>
+    </div>
+
+
+    <h1>Hi <%= username %>,  these are the list of products we have</h1>
+
+    <div id="anchor_div">
+        <a class="productslist_anchor" href="/products/mobiles">MObiles</a>
+        <a class="productslist_anchor" href="/products/laptops">Laptops</a>
+        <a class="productslist_anchor" href="/products/tablets">Tablets</a>
+        <a class="productslist_anchor" href="/products/lifestyle">LifeStyle</a>
+        <a class="productslist_anchor" href="/products/watches">Watches</a>
+    </div>
+
+   <form action="/logout" method="POST">
+    <button>Logout</button>
+   </form>
+
+
+</body>
+</html>

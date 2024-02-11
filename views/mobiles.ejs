@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+    </style>
+    <link rel="stylesheet"  href="/mobiles.css">
+</head>
+<body>
+   
+
+    <div class="navbar">
+        <!-- Mobiles list on the left side -->
+        <h1>Hey <%=username %>, The List of mobiles</h1>
+
+        <a id="Go-to-home" href="">Home</a>
+
+        <!-- "Add to Cart" anchor tag on the right side -->
+        <a class="Go-to-Cart" href="cart">Cart items</a>
+    </div>
+    <!------------------------------------------->
+
+   
+    <ul>
+        <% if(mobiles.length > 0) { %>
+            <% mobiles.forEach(mobile => { %>
+
+                <li>
+                    <p>Name: <%= mobile.company %></p>
+                    <p>Count: <span id="count-<%= mobile._id %>"><%= mobile.count %></span></p>
+                    <p >No. of purchases <span id="purchases-<%= mobile._id %>">0</span></p>
+
+                    <form class="add-form" action="/products/mobiles/add" method="POST">
+                        <input type="hidden" name="mobileId" value="<%= mobile._id %>">
+                        <button class="add-btn" data-doc="<%= mobile._id %>">Add</button>
+                    </form>
+
+                    <form class="less-form" action="/products/mobiles/less" method="POST">
+                        <input type="hidden" name="mobileId" value="<%= mobile._id %>">
+                        <button class="less-btn" data-doc="<%= mobile._id %>">Less</button>
+                    </form>
+
+                  <!--<form class="cart-form" action="/products/mobiles">-->  
+                        <button class="Add-to-cart-btn" data-doc="<%= JSON.stringify({ mobileId: mobile._id, username: username }) %>">Add to cart</button>
+                    </form>
+                </li>
+           <% }) %>
+        <% } %>
+    </ul>
+
+    <script>
+        // Add event listeners to handle button clicks
+        document.querySelectorAll('.add-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const mobileId = button.dataset.doc;
+                updateCount(mobileId, 'add');
+            });
+        });
+
+        document.querySelectorAll('.less-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const mobileId = button.dataset.doc;
+                updateCount(mobileId, 'less');
+            });
+        });
+
+        // Function to update count
+        function updateCount(mobileId, action) {
+            const countElement = document.getElementById(`count-${mobileId}`);
+            const purchasesElement = document.getElementById(`purchases-${mobileId}`);
+            let count = parseInt(countElement.innerText);
+            let purchases = parseInt(purchasesElement.innerText);
+
+            if (action === 'add') {
+                count--;
+                purchases++;
+            } else if (action === 'less') {
+                count++;
+                purchases--;
+            }
+
+            countElement.innerText = count;
+            purchasesElement.innerText = purchases;
+
+            // Send data to server
+            // fetch(`/products/mobiles/${action}`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({ mobileId })
+            // })
+            // .then(response => {
+            //     if (!response.ok) {
+            //         throw new Error('Network response was not ok');
+            //     }
+            // })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            // });
+        }
+
+
+        const home_link=document.getElementById('Go-to-home');
+
+        home_link.addEventListener("click",(event)=>{
+            event.preventDefault();
+            console.log("a clicked")
+            
+            fetch('/home',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href='/home'; // You need this as we are rendering the page but not redirecting
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
+
+        })
+
+        document.querySelectorAll('.Add-to-cart-btn').forEach((add_to_cart)=>{
+
+      
+
+        add_to_cart.addEventListener("click",(event)=>{
+            event.preventDefault();
+
+            const data = JSON.parse(add_to_cart.dataset.doc);
+            const mobileId = data.mobileId
+            console.log(mobileId)
+
+            const new_purchases=document.getElementById(`purchases-${mobileId}`).innerText
+
+            console.log(new_purchases)
+
+            const username=data.username;
+
+            console.log(username)
+
+
+            fetch('add_to_cart',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId:mobileId,purchases_number:new_purchases,username:username ,product_type:"mobile"})
+
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href='/products/mobiles'; // You need this as we are rendering the page but not redirecting
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+
+        })
+
+    })
+
+
+    </script>
+</body>
+</html>
+
+   
+
+

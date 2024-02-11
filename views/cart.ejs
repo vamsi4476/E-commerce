@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Items</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="/cart.css">
+     <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <!-- Mobiles list on the left side -->
+        <h1>Hey <%=username %>, Here you can find your cart Items</h1>
+
+        <a id="Go-to-home" href="/home">Home</a>
+    </div>
+
+    <div class="cart-items-list-div">
+
+
+       
+                <% cart_items.forEach((cart_item)=>{  %>
+                    <ul id="cart-list-ul">
+                        <li>
+                        <p>Product id: <span><%= cart_item.product_id %></span></p>   
+                        <p> Purchase Count: <span><%= cart_item.purchase_count %></span> </p>
+
+                        <button>Buy</button>
+
+                        <button class="btn"><i class="fa fa-trash"></i></button>
+
+
+                </li>
+            </ul>
+             <%   }) %>
+          
+
+    </div>
+   
+</body>
+</html>

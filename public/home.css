@@ -1,0 +1,42 @@
+/* Style for the navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+}
+
+.navbar h1 {
+    margin: 0;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar a:hover {
+    color: yellow;
+}
+
+/* Style for the main content */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.productslist_anchor {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.productslist_anchor:hover {
+    background-color: #ddd;
+}
