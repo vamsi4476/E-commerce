@@ -31,6 +31,7 @@ const dbURI='mongodb+srv://vamsi4476:gundavamsi01@nodetuts.w5rxfzn.mongodb.net/E
 const User=require('./models/users')
 const mobileModel=require('./models/mobiles')
 const cartModel=require('./models/cart')
+const laptopModel=require('./models/laptops')
 
 mongoose.connect(dbURI)
     .then((result)=>{
@@ -79,7 +80,7 @@ app.get('/home',isAuth,(req,res)=>{
     res.render('home',{username:req.session.username})
 })
 
-app.post('/home_form', (req,res,next)=>{
+app.post('/home_form', (req,res)=>{
 
     // Assuming only signin button is present for now
     let matchFound = false; // Variable to track if a matching user is found
@@ -172,6 +173,8 @@ app.post('/logout',(req,res)=>{
     })
 })
 
+///////////////////////////////////////////////////////////// MOBILE RELATED ROUTES  ////////////////////////////////////////////////////////
+
 app.get('/products/mobiles',(req,res)=>{
 
     mobileModel.find()
@@ -217,6 +220,8 @@ app.post('/products/mobiles/add',(req,res)=>{
 
 })
 
+///////////////////////////////////////////////////////////////  CART RELATED ROUTES /////////////////////////////////////////////////
+
 
 app.post('/products/add_to_cart',(req,res)=>{
 
@@ -254,7 +259,7 @@ app.post('/products/add_to_cart',(req,res)=>{
 })
 
 
-//////////////////// Cart Routes //////////
+
 
 app.get('/products/cart',(req,res)=>{
 
@@ -271,4 +276,26 @@ app.get('/products/cart',(req,res)=>{
         })
 
     
+})
+
+
+/////////////////////////////////////////////////////////////// LAPTOP ROUTES ///////////////////////////////////////////////
+
+
+
+app.get('/products/laptops',(req,res)=>{
+
+
+    laptopModel.find()
+        .then((result)=>{
+
+            
+
+            res.render("laptops",{laptopsList:result,username:req.session.username,laptopmodel:laptopModel})
+        })
+
+        .catch((err)=>{
+            console.log(err);
+        })
+
 })

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptops Page</title>
+</head>
+<body>
+
+    <h1>Hi.. <%=username%> These are the list of laptops we have </h1>
+
+
+    <ul>
+    <% laptopsList.forEach((laptop)=>{ %>
+
+        <li>
+           <span> company : </span> <p ><%= laptop.company %></p> 
+       
+
+        
+            <span>model : </span><p> <%= laptop.model %></p> 
+        
+
+        
+            <span>count : </span><p ><%= laptop.count %></p> 
+
+            <p><%= laptop._id %></p>
+
+
+            <button class="add-less-btn" data-doc="<%=laptop._id%> <%=laptop.count%>" name="add-btn" value="add">Add</button>
+
+            <button class="add-less-btn" data-doc="<%=laptop._id%> <%=laptop.count%>" name="less-btn" value="less">Less</button>
+
+            <button id="cart-btn" data-doc="<%laptop._id%> <%=laptop.count%>" >Add to Cart</button>
+
+            <br>
+            <br>
+        </li>
+
+
+  <%  }) %>
+
+</ul>
+    
+</body>
+</html>
+
+<script>
+
+    // gathering the buttons with class name and then check its value
+
+    // If it is add or less do the necessary process.
+
+    const btn_click=document.querySelectorAll(".add-less-btn");
+
+   btn_click.forEach((button)=>{
+    button.addEventListener("click",(event)=>{
+        event.preventDefault();
+
+       
+
+        const laptop_data=button.dataset.doc.split(' ');
+
+        // console.log(laptop_data[0]);
+        // console.log(laptop_data[1]);
+
+        if(button)
+
+
+    })
+   })
+</script>
