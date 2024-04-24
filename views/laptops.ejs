@@ -4,34 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laptops Page</title>
+    <link rel="stylesheet"  href="/laptops.css">
+    <style>
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+    }
+</style>
 </head>
 <body>
 
-    <h1>Hi.. <%=username%> These are the list of laptops we have </h1>
+    <div class="navbar">
+        <!-- Mobiles list on the left side -->
+        <h1>Hey <%=username %>, The List of mobiles</h1>
 
+        <a id="Go-to-home" href="/home">Home</a>
 
+        <!-- "Add to Cart" anchor tag on the right side -->
+        <a class="Go-to-Cart" href="cart">Cart items</a>
+    </div>
     <ul>
     <% laptopsList.forEach((laptop)=>{ %>
 
         <li>
-           <span> company : </span> <p ><%= laptop.company %></p> 
+            <!--Giving the id as laptop id makes it bind to a particular laptop-->
+
+            <!-- Used 's' at the beginning becoz classes and id must not start with a number-->
+           <span> company : </span> <span class="s<%=laptop._id%>" > <%= laptop.company %></span> 
        
 
         
-            <span>model : </span><p> <%= laptop.model %></p> 
+            <span>model : </span>   <span class="s<%=laptop._id%>" > <%= laptop.model %></span> 
         
 
         
-            <span>count : </span><p ><%= laptop.count %></p> 
+            <span>count : </span>    <span class="s<%=laptop._id%>" ><%= laptop.count %></span> 
 
-            <p><%= laptop._id %></p>
+            <p class="s<%=laptop._id%>"></p>
+
+
+<!-- 
+            <p class="<%= laptop._id %>" value="<%=laptop.count%>" > </p> -->
+
+           
 
 
             <button class="add-less-btn" data-doc="<%=laptop._id%> <%=laptop.count%>" name="add-btn" value="add">Add</button>
 
             <button class="add-less-btn" data-doc="<%=laptop._id%> <%=laptop.count%>" name="less-btn" value="less">Less</button>
 
-            <button id="cart-btn" data-doc="<%laptop._id%> <%=laptop.count%>" >Add to Cart</button>
+            <button class="cart-btn" data-doc="<%=laptop._id%> <%=laptop.count%>" >Add to Cart</button>
 
             <br>
             <br>
@@ -59,14 +83,120 @@
 
        
 
-        const laptop_data=button.dataset.doc.split(' ');
+        let laptop_data=button.dataset.doc.split(' ');
 
         // console.log(laptop_data[0]);
         // console.log(laptop_data[1]);
 
-        if(button)
+       // console.log(button.value);
 
+       if(button.value=="add"){
+
+        // taking the array of same class values. Used the id from the laptop_data array.
+        let laptop_summary=document.querySelectorAll(".s"+laptop_data[0])
+
+        console.log(laptop_summary[2].textContent+" is count");
+
+        let count_value=Number(laptop_summary[2].textContent);
+
+        if(count_value==0){
+
+            laptop_summary[3].innerHTML="<span> Can't add anymore items to cart</span>"
+
+        }
+        else{
+
+            count_value=count_value-1;
+
+            laptop_summary[2].textContent=count_value;
+
+            laptop_summary[3].innerHTML="";
+
+        }
+
+       }
+
+       // If the button clicked is less
+
+       else{
+
+       let laptop_summary=document.querySelectorAll(".s"+laptop_data[0])
+
+        console.log(laptop_summary[2].textContent+" is count");
+
+        let count_value=Number(laptop_summary[2].textContent);
+
+      //  console.log(laptop_data[1]);
+
+        
+
+        if(count_value+1>laptop_data[1]){
+
+            laptop_summary[3].innerHTML="<span> Can't remove anymore items from cart</span>"
+
+        }
+        else{
+
+            count_value=count_value+1;
+
+            laptop_summary[2].textContent=count_value;
+
+            laptop_summary[3].innerHTML="";
+
+        }
+
+    }
 
     })
    })
+
+
+   /////////////////////////  Add to Cart Button ///////////////////////////////
+
+
+   const cart_btns=document.querySelectorAll(".cart-btn");
+
+   cart_btns.forEach((cart_btn)=>{
+
+  
+   cart_btn.addEventListener("click",(event)=>{
+    event.preventDefault();
+
+    let laptop_data= cart_btn.dataset.doc.split(' ');
+
+    let laptopId=laptop_data[0];
+
+    console.log(laptopId);
+
+    let alldetails=document.querySelectorAll(".s"+laptopId);
+
+    let purchase_count=Number(alldetails[2].textContent);
+
+    console.log(purchase_count);
+
+    fetch('add_to_cart/laptops',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId:laptopId,purchases_number:purchase_count})
+
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href='/products/laptops'; // You need this as we are rendering the page but not redirecting
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+
+
+   })
+
+})
+
+
 </script>

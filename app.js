@@ -30,7 +30,13 @@ const dbURI='mongodb+srv://vamsi4476:gundavamsi01@nodetuts.w5rxfzn.mongodb.net/E
 // Importing Users Model from users.js.............
 const User=require('./models/users')
 const mobileModel=require('./models/mobiles')
+
+
 const cartModel=require('./models/cart')
+
+
+//const cartModel=cartproductModel.cartModel;
+
 const laptopModel=require('./models/laptops')
 
 mongoose.connect(dbURI)
@@ -45,7 +51,8 @@ mongoose.connect(dbURI)
 
 
     // Sessionss....................
-    const session = require('express-session')
+    const session = require('express-session');
+const { on } = require('events');
 
     const mongodbSession=require('connect-mongodb-session')(session);
 
@@ -258,6 +265,52 @@ app.post('/products/add_to_cart',(req,res)=>{
         res.redirect('mobiles')
 })
 
+
+app.post('/products/add_to_cart/laptops',(req,res)=>{
+
+    console.log(req.body);
+
+
+
+    laptopModel.findById(req.body.productId)
+        .then(response=>{
+            console.log(response);
+
+            let count= response.count-req.body.purchases_number;
+
+            let ob=cartModel;
+        
+            let ob1=new ob({
+                product_id:response._id,
+                purchase_count:count,
+                username:req.session.username
+            })
+        
+            ob1.save()
+                .then(response=>{
+                    console.log("the item has been saved to cart");
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+        
+        let update_laptop=response;
+        update_laptop.count=req.body.purchases_number;
+        update_laptop.save()
+            .then(response=>{
+                console.log("the laptop count has been updated successfully");
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+        
+
+})
 
 
 
